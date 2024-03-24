@@ -1,30 +1,30 @@
 prompts = [
 
-"Schreibe ein Gedicht über {filename[:-3]} mit folgenden Informationen: \
+f"Schreibe ein Gedicht über {filename[:-3]} mit folgenden Informationen: \
     {text}, am Anfang bitte mit bösen Satzen und nachher am Schluss herzlich",
 
 
-"Schreibe einen Gedicht mit guten Reimen über {filename[:-3]} mit folgenden Information: \
+f"Schreibe einen Gedicht mit guten Reimen über {filename[:-3]} mit folgenden Information: \
     {text} am Anfang bitte mit bösen Satzen und nachher am Schluss herzlich",
 
-"Schreibe einen Gedicht mit guten Reimen über {filename[:-3]} mit folgenden Information: \
+f"Schreibe einen Gedicht mit guten Reimen über {filename[:-3]} mit folgenden Information: \
     {text} , so dass ich es an einem Geburtstag vortragen kann",
 
 
-"Schreibe einen Gedicht mit guten Reimen am Ende der Zeile über {filename[:-3]} mit folgenden Information: \
+f"Schreibe einen Gedicht mit guten Reimen am Ende der Zeile über {filename[:-3]} mit folgenden Information: \
     {text} , am Anfang bitte mit bösen Satzen und nachher am Schluss herzlich",
 
-"Schreibe einen Gedicht mit guten Reimen am Ende der Zeile über {filename[:-3]} mit folgenden Information: \
+f"Schreibe einen Gedicht mit guten Reimen am Ende der Zeile über {filename[:-3]} mit folgenden Information: \
     {text} , so dass ich es an einem Geburtstag vortragen kann",
 
 
-"Stell dir vor du bist Johann Wolfgang von Goethe und musst dein bestes Gedicht schreiben {filename[:-3]} mit folgenden Informationen: \
+f"Stell dir vor du bist Johann Wolfgang von Goethe und musst dein bestes Gedicht schreiben {filename[:-3]} mit folgenden Informationen: \
     {text}, am Anfang bitte mit bösen Satzen und nachher am Schluss herzlich",
     
-"Stell dir vor du bist Johann Wolfgang von Goethe und musst dein bestes Gedicht schreiben {filename[:-3]} mit folgenden Informationen: \
+f"Stell dir vor du bist Johann Wolfgang von Goethe und musst dein bestes Gedicht schreiben {filename[:-3]} mit folgenden Informationen: \
     {text}, , so dass er es an einem Geburtstag vortragen kann",
     
-"Stell dir vor du bist diese Dichterin und musst dein bestes Gedicht über {filename[:-3]} schreiben\
+f"Stell dir vor du bist diese Dichterin und musst dein bestes Gedicht über {filename[:-3]} schreiben\
     Name: Sophie Meier \ \
     Geburtsdatum: 3. November 1992 \
     Geburtsort: Wien, Österreich \
