@@ -14,21 +14,19 @@ random.shuffle(files)
 
 
 def enter_json(filepath,content):
-    if not os.path.exists(filepath):
-        with open(filepath, "w") as f:
-            f.write("[]")
-    else:
-        with open(filepath, "w") as f:
-            data = json.load(f)
-            data.append(content)   
-            f.write(json.dumps(data))  
+    with open(filepath, 'w') as json_file:
+        json.dump(content, json_file)
                     
 
 def rate_poems(ratings_files_arr):
     
     poems = []
+    ratings = []
     
     for file in ratings_files_arr:
+        file = file.replace("poem", "prompt")
+        if not file.endswith(".txt"):
+            file += ".txt"
         txt = open(directory+"/"+file)
         text  = txt.read()
         poems.append(text)
@@ -41,7 +39,7 @@ def rate_poems(ratings_files_arr):
             model="gpt-3.5-turbo",
             messages=[
             {"role": "user", "content": f"{files[i]}: {poems[i]}, {files[i+1]}: {poems[i+1]}\
-                Gebe mir ein Rating von 1-10 von den beiden Gedichten gegeneinander im in diesem JSONFormat zurück: 'poemxrepx': [x,x,x], 'poemxrepx': [x,x,x]\
+                Gebe mir ein Rating von 1-10 mit einer Dezimalzahl von den beiden Gedichten gegeneinander im in diesem JSONFormat zurück: 'poemxrepx': [x,x,x], 'poemxrepx': [x,x,x]\
                 Kategorie 1: Inhalt,\
                 Kategorie 2: Reime,\
                 Kategorie 3: Stil"
@@ -49,9 +47,12 @@ def rate_poems(ratings_files_arr):
             ]
         )
         print(response.choices[0].message.content)
+        parsed_dict = json.loads(response.choices[0].message.content)
 
-        
-        enter_json(f"ratings/rating{counter_json}.json",response.choices[0].message.content)
+        ratings.append(parsed_dict)
+        print(len(ratings))
+
+    enter_json(f"ratings/rating{counter_json}.json", ratings)
         
         
         
