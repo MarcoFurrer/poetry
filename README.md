@@ -44,10 +44,10 @@ The project implements a three-stage pipeline:
 
 ```
 poetry/
-├── generate_poetry.py      # Main poetry generation script
+├── generate_poetry.py      # Main poetry generation script with embedded prompts
 ├── rating.py               # Tournament-style poem rating system
 ├── optimization.py         # Poem optimization through AI refinement
-├── prompts.py             # Prompt templates (imported by generate_poetry.py)
+├── prompts.py             # Legacy file (not currently used)
 ├── Noah.txt               # Input file with personal facts
 ├── selfwrittenpoem.txt    # Self-written poem for comparison
 ├── generated_poems/       # 64 AI-generated poems (8 prompts × 8 reps)
