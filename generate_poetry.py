@@ -1,43 +1,60 @@
-import openai
+"""
+AI Poetry Generator
+-------------------
+Generates multiple variations of German poems about a person using OpenAI GPT-3.5.
+Reads facts from a text file and creates 64 poems (8 prompts × 8 repetitions each).
+"""
 
+import openai
 from api_key import API_KEY
 import os
 import json
-REPS_PER_PROMPT = 8 # Number of times to repeat each prompt must be power of 2
 
+# Configuration
+REPS_PER_PROMPT = 8  # Number of times to repeat each prompt (must be power of 2 for tournament)
 
+# Load person's facts from file
 filename = "Noah.txt"
 txt = open(filename)
-text  = txt.read()
+text = txt.read()
 
+# Initialize OpenAI API
 openai.api_key = API_KEY
+# Define 8 different creative prompts for poem generation
 prompts = [
-
-f"Schreibe ein Gedicht über {filename[:-3]} mit folgenden Informationen: \
+    # Prompt 0: Standard poem with mean-to-kind emotional arc
+    f"Schreibe ein Gedicht über {filename[:-3]} mit folgenden Informationen: \
     {text}, am Anfang bitte mit bösen Satzen und nachher am Schluss herzlich",
 
-
-f"Schreibe einen Gedicht mit guten Reimen über {filename[:-3]} mit folgenden Information: \
+    
+    # Prompt 1: Well-rhymed poem with mean-to-kind emotional arc
+    f"Schreibe einen Gedicht mit guten Reimen über {filename[:-3]} mit folgenden Information: \
     {text} am Anfang bitte mit bösen Satzen und nachher am Schluss herzlich",
 
-f"Schreibe einen Gedicht mit guten Reimen über {filename[:-3]} mit folgenden Information: \
+    # Prompt 2: Well-rhymed birthday poem
+    f"Schreibe einen Gedicht mit guten Reimen über {filename[:-3]} mit folgenden Information: \
     {text} , so dass ich es an einem Geburtstag vortragen kann",
 
-
-f"Schreibe einen Gedicht mit guten Reimen am Ende der Zeile über {filename[:-3]} mit folgenden Information: \
+    
+    # Prompt 3: End-rhymed poem with mean-to-kind emotional arc
+    f"Schreibe einen Gedicht mit guten Reimen am Ende der Zeile über {filename[:-3]} mit folgenden Information: \
     {text} , am Anfang bitte mit bösen Satzen und nachher am Schluss herzlich",
 
-f"Schreibe einen Gedicht mit guten Reimen am Ende der Zeile über {filename[:-3]} mit folgenden Information: \
+    # Prompt 4: End-rhymed birthday poem
+    f"Schreibe einen Gedicht mit guten Reimen am Ende der Zeile über {filename[:-3]} mit folgenden Information: \
     {text} , so dass ich es an einem Geburtstag vortragen kann",
 
-
-f"Stell dir vor du bist Johann Wolfgang von Goethe und musst dein bestes Gedicht schreiben {filename[:-3]} mit folgenden Informationen: \
+    
+    # Prompt 5: Goethe-style poem with mean-to-kind emotional arc
+    f"Stell dir vor du bist Johann Wolfgang von Goethe und musst dein bestes Gedicht schreiben {filename[:-3]} mit folgenden Informationen: \
     {text}, am Anfang bitte mit bösen Satzen und nachher am Schluss herzlich",
     
-f"Stell dir vor du bist Johann Wolfgang von Goethe und musst dein bestes Gedicht schreiben {filename[:-3]} mit folgenden Informationen: \
+    # Prompt 6: Goethe-style birthday poem
+    f"Stell dir vor du bist Johann Wolfgang von Goethe und musst dein bestes Gedicht schreiben {filename[:-3]} mit folgenden Informationen: \
     {text}, , so dass er es an einem Geburtstag vortragen kann",
     
-f"Stell dir vor du bist diese Dichterin und musst dein bestes Gedicht über {filename[:-3]} schreiben\
+    # Prompt 7: Poem by fictional poet Sophie Meier
+    f"Stell dir vor du bist diese Dichterin und musst dein bestes Gedicht über {filename[:-3]} schreiben\
     Name: Sophie Meier \ \
     Geburtsdatum: 3. November 1992 \
     Geburtsort: Wien, Österreich \
@@ -48,18 +65,24 @@ f"Stell dir vor du bist diese Dichterin und musst dein bestes Gedicht über {fil
     "
 ]
 
-
+# Generate poems
+# For each of the 8 prompts, generate 8 variations (total: 64 poems)
 for poem_num, prompt in enumerate(prompts):
-  for rep in range(REPS_PER_PROMPT):
-    response = openai.chat.completions.create(
+    for rep in range(REPS_PER_PROMPT):
+        # Call OpenAI API to generate poem
+        response = openai.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "user", "content": prompt},
+            ]
+        )
         
-      model="gpt-3.5-turbo",
-      messages=[
-        {"role": "user", "content": prompt},
-      ]
-    )
-    savefile = open(f"generated_poems/prompt{poem_num}rep{rep}.txt","w")
-    savefile.write(response.choices[0].message.content)
-    savefile.close()
-    print(f"Version{rep} of poem {poem_num} generated. {response.choices[0].message.content[:100]}...{response.choices[0].message.content[-100:]}")
-  print(poem_num)
+        # Save generated poem to file
+        savefile = open(f"generated_poems/prompt{poem_num}rep{rep}.txt", "w")
+        savefile.write(response.choices[0].message.content)
+        savefile.close()
+        
+        # Print progress with preview
+        print(f"Version {rep} of poem {poem_num} generated. {response.choices[0].message.content[:100]}...{response.choices[0].message.content[-100:]}")
+    
+    print(f"Completed all {REPS_PER_PROMPT} variations for prompt {poem_num}")
